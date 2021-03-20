@@ -5,26 +5,34 @@ import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.Status;
 import flab.project.sharemyhobby.model.user.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static java.time.LocalDateTime.now;
+import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
+    private final PasswordEncoder passwordEncoder;
+
     private final UserMapper userMapper;
 
     @Transactional
     public User join(Email email, String nickname, String password) {
-        // 암호화 일단 skip
-        // checkNull - Guava
+        checkArgument(isNotEmpty(nickname), "Nickname must be provided");
+        checkArgument(isNotEmpty(password), "Password must be provided");
+        checkArgument(password.length() >= 8 && password.length() <= 15,
+                "Password must be between 8 and 15 characters.");
+
         User user = User.builder()
-                .id(null).email(email).nickname(nickname).password(password)
-                .status(Status.DEFAULT).lastLoginAt(now()).createAt(now()).updateAt(now())
+                .id(null).email(email).nickname(nickname)
+                .password(passwordEncoder.encode(password))
+                .status(Status.DEFAULT)
+                .lastLoginAt(now()).createAt(now()).updateAt(now())
                 .build();
 
         long userId = userMapper.saveUser(user);
