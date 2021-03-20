@@ -6,10 +6,8 @@ import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
 import flab.project.sharemyhobby.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequiredArgsConstructor
