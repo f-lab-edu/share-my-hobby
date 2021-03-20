@@ -1,1 +1,17 @@
-spring.output.ansi.enabled=always
+spring:
+  application:
+    name: share_my_hobby
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: gehlen10
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  output:
+    ansi:
+      enabled: ALWAYS
+server:
+  port: 8080
