@@ -29,10 +29,14 @@ public class UserService {
                 "Password must be between 8 and 15 characters.");
 
         User user = User.builder()
-                .id(null).email(email).nickname(nickname)
+                .id(null)
+                .email(email)
+                .nickname(nickname)
                 .password(passwordEncoder.encode(password))
                 .status(Status.DEFAULT)
-                .lastLoginAt(now()).createAt(now()).updateAt(now())
+                .lastLoginAt(now())
+                .createAt(now())
+                .updateAt(now())
                 .build();
 
         long userId = userMapper.saveUser(user);
