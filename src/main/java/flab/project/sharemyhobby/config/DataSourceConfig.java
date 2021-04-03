@@ -2,7 +2,6 @@ package flab.project.sharemyhobby.config;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.sf.log4jdbc.Log4jdbcProxyDataSource;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -41,7 +40,7 @@ public class DataSourceConfig {
         dataSource.setPoolName("TEST_H2_DB");
         dataSource.setMinimumIdle(1);
         dataSource.setMaximumPoolSize(1);
-        return new Log4jdbcProxyDataSource(dataSource);
+        return dataSource;
     }
 
     @Bean

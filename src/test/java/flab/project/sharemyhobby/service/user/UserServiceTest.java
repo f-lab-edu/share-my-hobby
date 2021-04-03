@@ -2,9 +2,8 @@ package flab.project.sharemyhobby.service.user;
 
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -13,13 +12,12 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
+@Slf4j
 @SpringBootTest
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserServiceTest {
-
-    private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserService userService;

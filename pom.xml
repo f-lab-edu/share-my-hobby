@@ -16,7 +16,7 @@
 
     <properties>
         <java.version>11</java.version>
-        <log4jdbc.version>0.2.7</log4jdbc.version>
+        <log4jdbc.version>1.16</log4jdbc.version>
         <guava.version>29.0-jre</guava.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
         <h2.version>1.4.200</h2.version>
@@ -46,8 +46,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.lazyluke</groupId>
-            <artifactId>log4jdbc-remix</artifactId>
+            <groupId>org.bgee.log4jdbc-log4j2</groupId>
+            <artifactId>log4jdbc-log4j2-jdbc4.1</artifactId>
             <version>${log4jdbc.version}</version>
         </dependency>
 
