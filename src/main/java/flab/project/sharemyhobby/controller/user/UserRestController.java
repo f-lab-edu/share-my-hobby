@@ -6,7 +6,6 @@ import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
 import flab.project.sharemyhobby.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,9 +16,9 @@ public class UserRestController {
     private final UserService userService;
 
     @PostMapping(path = "/join")
-    public ResponseEntity<JoinResponse> join(@RequestBody JoinRequest joinRequest) {
+    public JoinResponse join(@RequestBody JoinRequest joinRequest) {
         User user = userService.join(new Email(joinRequest.getEmail()),  joinRequest.getNickname(), joinRequest.getPassword());
-        return ResponseEntity.ok(new JoinResponse(user));
+        return new JoinResponse(user);
     }
 
 }
