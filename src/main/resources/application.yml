@@ -1,19 +1,35 @@
 spring:
+  profiles:
+    active: develop
+  output:
+    ansi:
+      enabled: ALWAYS
   application:
     name: share_my_hobby
+
+--- ## develop
+spring:
+  profiles: develop
   datasource:
     #driver-class-name: com.mysql.cj.jdbc.Driver
     #url: jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
-    password: gehlen10
+    password:
+
+--- ## test
+spring:
+  profiles: test
   h2:
     console:
       enabled: true
       path: /h2-console
-  output:
-    ansi:
-      enabled: ALWAYS
-server:
-  port: 8080
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test_sharemyhobby;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    pool-name: TEST_H2_DB
+    minimum-idle: 1
+    maximum-pool-size: 1
