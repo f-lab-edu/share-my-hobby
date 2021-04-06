@@ -4,8 +4,8 @@ import flab.project.sharemyhobby.mapper.user.UserMapper;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.Status;
 import flab.project.sharemyhobby.model.user.User;
+import flab.project.sharemyhobby.util.EncryptionUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,8 +16,6 @@ import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-
-    private final PasswordEncoder passwordEncoder;
 
     private final UserMapper userMapper;
 
@@ -32,7 +30,7 @@ public class UserService {
                 .id(null)
                 .email(email)
                 .nickname(nickname)
-                .password(passwordEncoder.encode(password))
+                .password(EncryptionUtils.encryptSHA256(password))
                 .status(Status.DEFAULT)
                 .lastLoginAt(now())
                 .createAt(now())
