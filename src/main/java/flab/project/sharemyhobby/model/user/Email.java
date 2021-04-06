@@ -2,7 +2,6 @@ package flab.project.sharemyhobby.model.user;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -10,7 +9,6 @@ import static java.util.regex.Pattern.matches;
 import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
 @Getter
-@EqualsAndHashCode
 public class Email {
 
     private String address;
