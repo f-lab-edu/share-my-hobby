@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: develop
+    active: local
   output:
     ansi:
       enabled: ALWAYS
@@ -11,8 +11,15 @@ spring:
 spring:
   profiles: develop
   datasource:
-    #driver-class-name: com.mysql.cj.jdbc.Driver
-    #url: jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password:
+
+--- ## local
+spring:
+  profiles: local
+  datasource:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
