@@ -10,7 +10,7 @@ public class EncryptionUtils {
         try {
             digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalArgumentException(e);
+            throw new RuntimeException("An exception occurred while SHA-256 encrypting :", e);
         }
         byte[] encoded = digest.digest(
                 text.getBytes(StandardCharsets.UTF_8));
