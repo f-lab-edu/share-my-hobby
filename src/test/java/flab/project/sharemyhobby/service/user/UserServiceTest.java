@@ -1,5 +1,7 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.InvalidPasswordException;
+import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.*;
 
 /*
  * @SpringBootTest
@@ -36,13 +39,13 @@ class UserServiceTest {
     private UserService userService;
 
     private Email email;
-    private String name;
+    private String nickname;
     private String password;
 
     @BeforeAll
     void setUp() {
-        email = new Email("test@gmail.com");
-        name = "박찬호";
+        email = new Email("adorno10@naver.com");
+        nickname = "cold-pumpkin";
         password = "12345678";
     }
 
@@ -50,10 +53,39 @@ class UserServiceTest {
     @Order(1)
     @DisplayName("회원가입에 성공하면 DB에 저장된 유저의 정보를 리턴한다")
     void testJoinNewUserAndReturnUserInfo() {
-        User user = userService.join(email, name, password);
+        User user = userService.join(email, nickname, password);
         assertThat(user, is(notNullValue()));
         assertThat(user.getId(), is(notNullValue()));
         assertThat(user.getEmail(), is(email));
-        log.info("회원가입 : {}", user);
+        log.info("회원 가입 : {}", user);
     }
+
+    @Test
+    @Order(2)
+    @DisplayName("이메일로 유저 정보를 찾으면 유저의 정보를 리턴한다")
+    void testFindUserByEmailAndReturnUserInfo() {
+        User user = userService.findByEmail(email).orElse(null);
+        assertThat(user, is(notNullValue()));
+        assertThat(user.getEmail().getAddress(), is(email.getAddress()));
+        log.info("이메일 {}: {}", user.getEmail().getAddress(), user);
+    }
+
+    @Test
+    @Order(3)
+    @DisplayName("이메일 정보가 존재하지 않으면 NotFoundException 예외를 발생시킨다")
+    void testThrowNotFoundExceptionIfEmailNotExists() {
+        Exception exception = assertThrows(NotFoundException.class, ()
+                    -> userService.login(new Email("test-invalid@gmail.com"), password));
+        assertThat(exception.getMessage(), is("Email address not found"));
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("패스워드가 틀리면 InvalidPasswordException 예외를 발생시킨다")
+    void testThrowInvalidPasswordExceptionIfInvalidPassword() {
+        Exception exception = assertThrows(InvalidPasswordException.class, ()
+                -> userService.login(email, "invalid password"));
+        assertThat(exception.getMessage(), is("You have entered an invalid password"));
+    }
+
 }
