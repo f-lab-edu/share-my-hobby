@@ -6,6 +6,11 @@
 
     <typeAliases>
         <typeAlias type="flab.project.sharemyhobby.model.user.User" alias="User"/>
+        <typeAlias type="flab.project.sharemyhobby.model.user.Email" alias="Email"/>
     </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="org.apache.ibatis.type.LocalDateTypeHandler" />
+    </typeHandlers>
 
 </configuration>
