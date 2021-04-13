@@ -35,6 +35,7 @@
             <version>2.1.4</version>
         </dependency>
 
+        <!-- MyBatis TypeHandler가 JSR-310에 의해 추가된 Java 8 Date & Time API 사용할 수 있도록 추가 -->
         <dependency>
             <groupId>org.mybatis</groupId>
             <artifactId>mybatis-typehandlers-jsr310</artifactId>
