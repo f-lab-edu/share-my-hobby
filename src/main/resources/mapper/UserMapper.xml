@@ -40,8 +40,21 @@
         WHERE id = #{id}
     </update>
 
-    <select id="findByEmail" parameterType="Email" resultMap="userMap">
-        SELECT * FROM user WHERE email = #{address}
+    <select id="findByEmailAndPassword" resultMap="userMap">
+        SELECT
+            id,
+            email,
+            nickname,
+            password,
+            status,
+            last_login_at,
+            update_at,
+            create_at
+            FROM
+            user
+        WHERE
+            email = #{email.address}
+            AND password = #{password}
     </select>
 
 </mapper>

@@ -1,7 +1,6 @@
 package flab.project.sharemyhobby.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import flab.project.sharemyhobby.exception.InvalidPasswordException;
 import flab.project.sharemyhobby.model.address.Address;
 import flab.project.sharemyhobby.model.address.Location;
 import lombok.*;
@@ -41,11 +40,6 @@ public class User {
     private final LocalDateTime createAt;
 
     private LocalDateTime updateAt;
-
-    public void checkPassword(String inputPw, String userPw) {
-        if (!inputPw.equals(userPw))
-            throw new InvalidPasswordException();
-    }
 
     public void loginPostProcess() {
         lastLoginAt = now();

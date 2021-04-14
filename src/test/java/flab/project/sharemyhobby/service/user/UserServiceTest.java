@@ -1,9 +1,9 @@
 package flab.project.sharemyhobby.service.user;
 
-import flab.project.sharemyhobby.exception.InvalidPasswordException;
 import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
+import flab.project.sharemyhobby.util.EncryptionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,9 @@ class UserServiceTest {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private LoginService loginService;
+
     private Email email;
     private String nickname;
     private String password;
@@ -64,7 +67,7 @@ class UserServiceTest {
     @Order(2)
     @DisplayName("이메일로 유저 정보를 찾으면 유저의 정보를 리턴한다")
     void testFindUserByEmailAndReturnUserInfo() {
-        User user = userService.findByEmail(email).orElse(null);
+        User user = userService.findByEmailAndPassword(email, EncryptionUtils.encryptSHA256(password)).orElse(null);
         assertThat(user, is(notNullValue()));
         assertThat(user.getEmail().getAddress(), is(email.getAddress()));
         log.info("이메일 {}: {}", user.getEmail().getAddress(), user);
@@ -72,20 +75,11 @@ class UserServiceTest {
 
     @Test
     @Order(3)
-    @DisplayName("이메일 정보가 존재하지 않으면 NotFoundException 예외를 발생시킨다")
+    @DisplayName("유저 정보가 존재하지 않으면 NotFoundException 예외를 발생시킨다")
     void testThrowNotFoundExceptionIfEmailNotExists() {
         Exception exception = assertThrows(NotFoundException.class, ()
-                    -> userService.login(new Email("test-invalid@gmail.com"), password));
+                -> loginService.login(new Email("test-invalid@gmail.com"), password));
         assertThat(exception.getMessage(), is("Email address not found"));
-    }
-
-    @Test
-    @Order(4)
-    @DisplayName("패스워드가 틀리면 InvalidPasswordException 예외를 발생시킨다")
-    void testThrowInvalidPasswordExceptionIfInvalidPassword() {
-        Exception exception = assertThrows(InvalidPasswordException.class, ()
-                -> userService.login(email, "invalid password"));
-        assertThat(exception.getMessage(), is("You have entered an invalid password"));
     }
 
 }

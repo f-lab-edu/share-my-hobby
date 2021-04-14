@@ -6,6 +6,7 @@ import flab.project.sharemyhobby.model.api.response.user.JoinResponse;
 import flab.project.sharemyhobby.model.api.response.user.LoginResponse;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
+import flab.project.sharemyhobby.service.user.LoginService;
 import flab.project.sharemyhobby.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ public class UserRestController {
 
     private final UserService userService;
 
+    private final LoginService loginService;
+
     @PostMapping(path = "/join")
     public JoinResponse join(@RequestBody JoinRequest joinRequest) {
         User user = userService.join(new Email(joinRequest.getEmail()),  joinRequest.getNickname(), joinRequest.getPassword());
@@ -25,7 +28,7 @@ public class UserRestController {
 
     @GetMapping(path = "/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
-        User user = userService.login(new Email(loginRequest.getEmail()), loginRequest.getPassword());
+        User user = loginService.login(new Email(loginRequest.getEmail()), loginRequest.getPassword());
         return new LoginResponse(user);
     }
 

@@ -1,6 +1,5 @@
 package flab.project.sharemyhobby.service.user;
 
-import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.mapper.user.UserMapper;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.Status;
@@ -46,20 +45,13 @@ public class UserService {
                 .build();
     }
 
-    @Transactional
-    public User login(Email email, String password) {
-        checkArgument(isNotEmpty(password), "Password must be provided");
-        User user = findByEmail(email)
-                .orElseThrow(NotFoundException::new);
-        user.checkPassword(EncryptionUtils.encryptSHA256(password), user.getPassword());
-        user.loginPostProcess();
-        userMapper.updateUser(user);
-        return user;
+    @Transactional(readOnly = true)
+    public Optional<User> findByEmailAndPassword(Email email, String password) {
+        return userMapper.findByEmailAndPassword(email, password);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<User> findByEmail(Email email) {
-        return userMapper.findByEmail(email);
+    public void updateUser(User user) {
+        userMapper.updateUser(user);
     }
 
 }
