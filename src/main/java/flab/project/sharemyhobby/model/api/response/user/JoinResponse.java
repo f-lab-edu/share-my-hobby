@@ -12,4 +12,8 @@ public class JoinResponse {
 
     private final User user;
 
+    public static JoinResponse from(User user) {
+        return new JoinResponse(user);
+    }
+
 }

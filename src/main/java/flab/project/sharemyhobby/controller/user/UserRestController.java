@@ -23,13 +23,13 @@ public class UserRestController {
     @PostMapping(path = "/join")
     public JoinResponse join(@RequestBody JoinRequest joinRequest) {
         User user = userService.join(new Email(joinRequest.getEmail()),  joinRequest.getNickname(), joinRequest.getPassword());
-        return new JoinResponse(user);
+        return JoinResponse.from(user);
     }
 
     @GetMapping(path = "/login")
     public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         User user = loginService.login(new Email(loginRequest.getEmail()), loginRequest.getPassword());
-        return new LoginResponse(user);
+        return LoginResponse.from(user);
     }
 
 }

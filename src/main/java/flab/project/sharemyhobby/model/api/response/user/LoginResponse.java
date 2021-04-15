@@ -12,4 +12,7 @@ public class LoginResponse {
 
     private final User user;
 
+    public static LoginResponse from(User user) {
+        return new LoginResponse(user);
+    }
 }
