@@ -50,7 +50,7 @@
             last_login_at,
             update_at,
             create_at
-            FROM
+        FROM
             user
         WHERE
             email = #{email.address}
