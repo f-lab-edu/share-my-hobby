@@ -6,6 +6,9 @@ spring:
       enabled: ALWAYS
   application:
     name: share_my_hobby
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 --- ## develop
 spring:
