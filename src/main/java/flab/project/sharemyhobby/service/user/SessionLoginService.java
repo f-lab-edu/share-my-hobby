@@ -13,13 +13,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 
-import java.rmi.AlreadyBoundException;
-
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
-@Slf4j
-@Primary
 @Service
 @RequiredArgsConstructor
 public class SessionLoginService implements LoginService {
