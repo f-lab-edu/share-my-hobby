@@ -11,7 +11,7 @@ import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 @Getter
 public class Email {
 
-    private String address;
+    private final String address;
 
     @JsonCreator
     public Email(@JsonProperty("address") String address) {

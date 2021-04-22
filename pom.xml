@@ -20,6 +20,7 @@
         <guava.version>29.0-jre</guava.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
         <h2.version>1.4.200</h2.version>
+        <mybatis-typehandlers.version>1.0.2</mybatis-typehandlers.version>
     </properties>
 
     <dependencies>
@@ -28,10 +29,29 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- Redis 연동을 위한 의존성 추가 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- Redis에 세션 데이터 저장을 위한 의존성 추가 -->
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.1.4</version>
+        </dependency>
+
+        <!-- MyBatis TypeHandler가 JSR-310에 의해 추가된 Java 8 Date & Time API 사용할 수 있도록 추가 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>${mybatis-typehandlers.version}</version>
         </dependency>
 
         <dependency>

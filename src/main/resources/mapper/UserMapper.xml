@@ -4,9 +4,57 @@
 
 <mapper namespace="flab.project.sharemyhobby.mapper.user.UserMapper">
 
+    <resultMap id="emailMap" type="Email" >
+        <constructor>
+            <arg column="email" name="address" javaType="String" />
+        </constructor>
+    </resultMap>
+
+    <resultMap type="User" id="userMap">
+        <constructor>
+            <idArg column="id" javaType="Long" />
+            <arg column="email" resultMap="emailMap" javaType="Email" />
+            <arg column="create_at" javaType="java.time.LocalDateTime" />
+        </constructor>
+        <result property="nickname" column="nickname" />
+        <result property="password" column="password" />
+        <result property="status" column="status" />
+        <result property="lastLoginAt" column="last_login_at" />
+        <result property="updateAt" column="update_at" />
+    </resultMap>
+
     <insert id="saveUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO user(id, email, nickname, password, status, last_login_at, update_at, create_at)
         VALUES(#{id}, #{email.address}, #{nickname}, #{password}, #{status}, #{lastLoginAt}, #{createAt}, #{updateAt})
     </insert>
+
+    <update id="updateUser" parameterType="User">
+        UPDATE
+            user
+        SET nickname = #{nickname},
+            password = #{password},
+            status = #{status},
+            last_login_at = #{lastLoginAt},
+            update_at = #{updateAt},
+            create_at = #{createAt}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findByEmailAndPassword" resultMap="userMap">
+        SELECT
+            id,
+            email,
+            nickname,
+            password,
+            status,
+            last_login_at,
+            update_at,
+            create_at
+        FROM
+            user
+        WHERE
+            email = #{email.address}
+            AND password = #{password}
+    </select>
 
 </mapper>

@@ -8,12 +8,11 @@ import lombok.ToString;
 @Getter
 @RequiredArgsConstructor
 @ToString
-public class JoinResponse {
+public class LoginResponse {
 
     private final User user;
 
-    public static JoinResponse from(User user) {
-        return new JoinResponse(user);
+    public static LoginResponse from(User user) {
+        return new LoginResponse(user);
     }
-
 }
