@@ -7,4 +7,6 @@ public interface LoginService {
 
     User login(Email email, String password);
 
+    void logout();
+
 }

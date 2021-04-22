@@ -32,4 +32,9 @@ public class UserRestController {
         return LoginResponse.from(user);
     }
 
+    @GetMapping(path = "/logout")
+    public void logout() {
+        loginService.logout();
+    }
+
 }
