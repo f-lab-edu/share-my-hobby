@@ -1,20 +1,25 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.InvalidPasswordException;
+import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.mapper.user.UserMapper;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.Status;
 import flab.project.sharemyhobby.model.user.User;
 import flab.project.sharemyhobby.util.EncryptionUtils;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.time.LocalDateTime.now;
 import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -48,6 +53,16 @@ public class UserService {
     @Transactional(readOnly = true)
     public Optional<User> findByEmailAndPassword(Email email, String password) {
         return userMapper.findByEmailAndPassword(email, password);
+    }
+
+    @Transactional
+    public User deleteUser(Long userId, String password, HttpSession httpSession) {
+        log.info("delete 서비스 {}, {}", userId, password);
+        User user = userMapper.findByUserIdAndPassword(userId, EncryptionUtils.encryptSHA256(password))
+                .orElseThrow(InvalidPasswordException::new);
+        userMapper.deleteUser(userId);
+        httpSession.invalidate();
+        return user;
     }
 
     public void updateUser(User user) {
