@@ -41,6 +41,12 @@
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
 
+        <!-- Input 값 정합성 체크를 위해 추가 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>

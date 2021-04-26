@@ -3,6 +3,7 @@ package flab.project.sharemyhobby.service.user;
 import flab.project.sharemyhobby.exception.InvalidPasswordException;
 import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.mapper.user.UserMapper;
+import flab.project.sharemyhobby.model.api.request.user.PasswordRequest;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.Status;
 import flab.project.sharemyhobby.model.user.User;
@@ -25,6 +26,8 @@ import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 public class UserService {
 
     private final UserMapper userMapper;
+
+    private final HttpSession httpSession;
 
     @Transactional
     public User join(Email email, String nickname, String password) {
@@ -56,13 +59,25 @@ public class UserService {
     }
 
     @Transactional
-    public User deleteUser(Long userId, String password, HttpSession httpSession) {
+    public User deleteUser(Long userId, String password) {
         log.info("delete 서비스 {}, {}", userId, password);
         User user = userMapper.findByUserIdAndPassword(userId, EncryptionUtils.encryptSHA256(password))
                 .orElseThrow(InvalidPasswordException::new);
         userMapper.deleteUser(userId);
         httpSession.invalidate();
         return user;
+    }
+
+    @Transactional
+    public void updatePassword(Long userId, PasswordRequest passwordRequest) {
+        User user = userMapper.findByUserIdAndPassword(userId, EncryptionUtils.encryptSHA256(passwordRequest.getOldPassword()))
+                .orElseThrow(InvalidPasswordException::new);
+
+        User newPwUser = user.toBuilder()
+                .password(EncryptionUtils.encryptSHA256(passwordRequest.getNewPassword()))
+                .updateAt(now())
+                .build();
+        updateUser(newPwUser);
     }
 
     public void updateUser(User user) {

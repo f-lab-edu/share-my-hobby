@@ -1,6 +1,8 @@
 package flab.project.sharemyhobby.service.user;
 
 import flab.project.sharemyhobby.exception.NotFoundException;
+import flab.project.sharemyhobby.mapper.user.UserMapper;
+import flab.project.sharemyhobby.model.api.request.user.PasswordRequest;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;
 import flab.project.sharemyhobby.util.EncryptionUtils;
@@ -41,15 +43,23 @@ class UserServiceTest {
     @Autowired
     private LoginService loginService;
 
+    @Autowired
+    private UserMapper userMapper;
+
     private Email email;
     private String nickname;
     private String password;
+
+    private PasswordRequest passwordRequest;
+
 
     @BeforeAll
     void setUp() {
         email = new Email("adorno10@naver.com");
         nickname = "cold-pumpkin";
         password = "12345678";
+
+        passwordRequest = new PasswordRequest(password, "87654321");
     }
 
     @Test
@@ -80,6 +90,25 @@ class UserServiceTest {
         Exception exception = assertThrows(NotFoundException.class, ()
                 -> loginService.login(new Email("test-invalid@gmail.com"), password));
         assertThat(exception.getMessage(), is("Email address not found"));
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("기존 패스워드와 새로운 비밀번호를 받아 패스워드를 변경한다")
+    void testUpdatePasswordIfOldPwAndNewPwAreEntered() {
+        String oldPw = password;
+        String newPw = passwordRequest.getNewPassword();
+
+        userService.updatePassword(1L, passwordRequest);
+        User newPwUser = userMapper.findByUserIdAndPassword(1L, EncryptionUtils.encryptSHA256(passwordRequest.getNewPassword()))
+                .orElse(null);
+
+        assertThat(oldPw, is(passwordRequest.getOldPassword()));
+        assertThat(newPwUser, is(notNullValue()));
+        assertThat(EncryptionUtils.encryptSHA256(newPw), is(newPwUser.getPassword()));
+
+        log.info("기존 PW : {}", oldPw);
+        log.info("새로운 PW : {}", newPw);
     }
 
 }

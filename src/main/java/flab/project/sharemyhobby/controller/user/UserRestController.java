@@ -3,6 +3,7 @@ package flab.project.sharemyhobby.controller.user;
 import flab.project.sharemyhobby.model.api.request.user.DeleteRequest;
 import flab.project.sharemyhobby.model.api.request.user.JoinRequest;
 import flab.project.sharemyhobby.model.api.request.user.LoginRequest;
+import flab.project.sharemyhobby.model.api.request.user.PasswordRequest;
 import flab.project.sharemyhobby.model.api.response.user.DeleteResponse;
 import flab.project.sharemyhobby.model.api.response.user.JoinResponse;
 import flab.project.sharemyhobby.model.api.response.user.LoginResponse;
@@ -16,6 +17,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+import static flab.project.sharemyhobby.model.commons.SessionKey.USER_SESSION_KEY;
 
 @Slf4j
 @RestController
@@ -46,9 +50,15 @@ public class UserRestController {
 
     @DeleteMapping(path = "/account")
     public DeleteResponse delete(@RequestBody DeleteRequest deleteRequest, HttpSession httpSession) {
-        Long userId = (Long) httpSession.getAttribute(SessionKey.USER_SESSION_KEY);
-        User user = userService.deleteUser(userId, deleteRequest.getPassword(), httpSession);
+        Long userId = (Long) httpSession.getAttribute(USER_SESSION_KEY);
+        User user = userService.deleteUser(userId, deleteRequest.getPassword());
         return DeleteResponse.from(user);
+    }
+
+    @PutMapping(path = "/account/password")
+    public void updatePassword(@Valid @RequestBody PasswordRequest passwordRequest, HttpSession httpSession) {
+        Long userId = (Long) httpSession.getAttribute(USER_SESSION_KEY);
+        userService.updatePassword(userId, passwordRequest);
     }
 
 }
