@@ -34,7 +34,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class UserServiceTest {
 
     @Autowired
@@ -59,22 +58,20 @@ class UserServiceTest {
         nickname = "cold-pumpkin";
         password = "12345678";
 
+        userService.join(email, nickname, password);
         passwordRequest = new PasswordRequest(password, "87654321");
     }
 
     @Test
-    @Order(1)
     @DisplayName("회원가입에 성공하면 DB에 저장된 유저의 정보를 리턴한다")
     void testJoinNewUserAndReturnUserInfo() {
-        User user = userService.join(email, nickname, password);
+        User user = userService.join(new Email("test@gmail.com"), "test", "11111111");
         assertThat(user, is(notNullValue()));
         assertThat(user.getId(), is(notNullValue()));
-        assertThat(user.getEmail(), is(email));
         log.info("회원 가입 : {}", user);
     }
 
     @Test
-    @Order(2)
     @DisplayName("이메일로 유저 정보를 찾으면 유저의 정보를 리턴한다")
     void testFindUserByEmailAndReturnUserInfo() {
         User user = userService.findByEmailAndPassword(email, EncryptionUtils.encryptSHA256(password)).orElse(null);
@@ -84,7 +81,6 @@ class UserServiceTest {
     }
 
     @Test
-    @Order(3)
     @DisplayName("유저 정보가 존재하지 않으면 NotFoundException 예외를 발생시킨다")
     void testThrowNotFoundExceptionIfEmailNotExists() {
         Exception exception = assertThrows(NotFoundException.class, ()
@@ -93,7 +89,6 @@ class UserServiceTest {
     }
 
     @Test
-    @Order(4)
     @DisplayName("기존 패스워드와 새로운 비밀번호를 받아 패스워드를 변경한다")
     void testUpdatePasswordIfOldPwAndNewPwAreEntered() {
         String oldPw = password;
