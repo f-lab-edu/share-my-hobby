@@ -40,6 +40,11 @@
         WHERE id = #{id}
     </update>
 
+    <select id="isDuplicate" parameterType="Email" resultType="boolean">
+        SELECT EXISTS
+        (SELECT id FROM user WHERE email = #{address})
+    </select>
+
     <select id="findByEmailAndPassword" resultMap="userMap">
         SELECT
             id,

@@ -1,5 +1,6 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.DuplicateUserException;
 import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.mapper.user.UserMapper;
 import flab.project.sharemyhobby.model.api.request.user.PasswordRequest;
@@ -70,6 +71,15 @@ class UserServiceTest {
         assertThat(user.getId(), is(notNullValue()));
         log.info("회원 가입 : {}", user);
     }
+
+    @Test
+    @DisplayName("회원가입 시 이미 존재하는 이메일이면 DuplicateUserException 예외를 발생시킨다")
+    void testThrowDuplicateUserExceptionIfDuplicateUserEmail() {
+        Exception exception = assertThrows(DuplicateUserException.class, ()
+                -> userService.join(email, nickname, password));
+        assertThat(exception.getMessage(), is("User already exists"));
+    }
+
 
     @Test
     @DisplayName("이메일로 유저 정보를 찾으면 유저의 정보를 리턴한다")

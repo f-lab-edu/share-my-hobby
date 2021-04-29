@@ -1,5 +1,6 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.DuplicateUserException;
 import flab.project.sharemyhobby.exception.InvalidPasswordException;
 import flab.project.sharemyhobby.exception.NotFoundException;
 import flab.project.sharemyhobby.mapper.user.UserMapper;
@@ -46,6 +47,9 @@ public class UserService {
                 .createAt(now())
                 .updateAt(now())
                 .build();
+
+        if(userMapper.isDuplicate(email))
+            throw new DuplicateUserException();
 
         long userId = userMapper.saveUser(user);
         return user.toBuilder()

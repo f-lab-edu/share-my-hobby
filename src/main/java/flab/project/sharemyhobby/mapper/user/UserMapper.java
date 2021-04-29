@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface UserMapper {
 
+    boolean isDuplicate(Email email);
+
     long saveUser(User user);
 
     void updateUser(User user);
