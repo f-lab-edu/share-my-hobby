@@ -57,4 +57,25 @@
             AND password = #{password}
     </select>
 
+    <select id="findByUserIdAndPassword" resultMap="userMap">
+        SELECT
+            id,
+            email,
+            nickname,
+            password,
+            status,
+            last_login_at,
+            update_at,
+            create_at
+        FROM
+            user
+        WHERE
+            id = #{userId}
+            AND password = #{password}
+    </select>
+
+    <delete id="deleteUser">
+        DELETE FROM user WHERE id = #{userId}
+    </delete>
+
 </mapper>

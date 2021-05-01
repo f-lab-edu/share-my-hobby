@@ -18,4 +18,8 @@ public interface UserMapper {
 
     Optional<User> findByEmailAndPassword(@Param("email") Email email, @Param("password") String password);
 
+    Optional<User> findByUserIdAndPassword(@Param("userId") Long userId, @Param("password") String password);
+
+    void deleteUser(Long userId);
+
 }

@@ -8,7 +8,6 @@ import flab.project.sharemyhobby.model.user.User;
 import flab.project.sharemyhobby.util.EncryptionUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import static com.google.common.base.Preconditions.checkArgument;
 import static org.apache.logging.log4j.util.Strings.isNotEmpty;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SessionLoginService implements LoginService {
@@ -38,4 +38,15 @@ public class SessionLoginService implements LoginService {
         httpSession.setAttribute(USER_SESSION_KEY, user.getId());
         return user;
     }
+
+    @Override
+    public void logout() {
+        httpSession.invalidate();
+    }
+
+    @Override
+    public Long getLogInUserId() {
+        return (Long) httpSession.getAttribute(USER_SESSION_KEY);
+    }
+
 }
