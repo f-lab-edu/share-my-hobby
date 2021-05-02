@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="flab.project.sharemyhobby.mapper.user.ProfileMapper">
+
+    <insert id="saveProfile" parameterType="Profile" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO profile (id, user_id, profile_image_url, status_message)
+        VALUES(#{id}, #{userId}, #{profileImageUrl}, #{statusMessage})
+    </insert>
+
+</mapper>

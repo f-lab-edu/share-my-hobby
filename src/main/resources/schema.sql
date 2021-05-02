@@ -12,3 +12,13 @@ CREATE TABLE user (
   CONSTRAINT unq_member_email UNIQUE (email),
   CONSTRAINT unq_member_nickname UNIQUE (nickname)
 );
+
+DROP TABLE IF EXISTS profile CASCADE;
+CREATE TABLE profile (
+  id                bigint NOT NULL AUTO_INCREMENT,
+  user_id           bigint NOT NULL,
+  profile_image_url varchar(255),
+  status_message    varchar(100),
+  PRIMARY KEY (id),
+  CONSTRAINT fk_profile_to_user FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
