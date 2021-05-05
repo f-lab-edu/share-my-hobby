@@ -2,7 +2,7 @@ package flab.project.sharemyhobby.service.user;
 
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
-import flab.project.sharemyhobby.util.ImageUploader;
+import flab.project.sharemyhobby.util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,7 +17,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ProfileService {
 
-    private final ImageUploader imageUploader;
+    private final FileUploader fileUploader;
 
     private final ProfileMapper profileMapper;
 
@@ -43,7 +43,7 @@ public class ProfileService {
             return null;
         String profileImageUrl = null;
         try {
-            profileImageUrl = imageUploader.upload(profileImage);
+            profileImageUrl = fileUploader.upload(profileImage);
         } catch (S3Exception | IOException e) {
             log.error("Image upload failed : {}", e.getMessage());
         }

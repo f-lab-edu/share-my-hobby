@@ -1,6 +1,6 @@
 package flab.project.sharemyhobby.aws;
 
-import flab.project.sharemyhobby.util.ImageUploader;
+import flab.project.sharemyhobby.util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +15,7 @@ import java.net.URL;
 
 @Slf4j
 @RequiredArgsConstructor
-public final class S3Uploader implements ImageUploader {
+public final class S3Uploader implements FileUploader {
 
     private final S3Client s3Client;
 

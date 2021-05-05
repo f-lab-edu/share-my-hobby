@@ -5,7 +5,7 @@ package flab.project.sharemyhobby.aws;
 //import com.amazonaws.regions.Regions;
 //import com.amazonaws.services.s3.AmazonS3;
 //import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import flab.project.sharemyhobby.util.ImageUploader;
+import flab.project.sharemyhobby.util.FileUploader;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.mock.web.MockMultipartFile;
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class S3UploaderTest {
 
-    private ImageUploader imageUploader;
+    private FileUploader fileUploader;
 
     @BeforeAll
     void setUp() {
@@ -42,7 +42,7 @@ class S3UploaderTest {
                     .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
                     .build();
 
-        imageUploader = new S3Uploader(s3Client, bucketName);
+        fileUploader = new S3Uploader(s3Client, bucketName);
     }
 
     @Test
@@ -56,7 +56,7 @@ class S3UploaderTest {
         File file = new File(testProfile.getFile());
         FileInputStream input = new FileInputStream(file);
         MultipartFile profileImage = new MockMultipartFile(fileName, input);
-        String url = imageUploader.upload(profileImage);
+        String url = fileUploader.upload(profileImage);
 
         assertThat(url).isNotNull();
         log.info("S3 bucket url: {}", url);
