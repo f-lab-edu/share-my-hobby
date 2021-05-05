@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/users")
+@RequestMapping(value = "/my-infos")
 public class ProfileRestController {
 
     private final ProfileService profileService;
