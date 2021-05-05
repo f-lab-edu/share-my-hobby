@@ -1,5 +1,6 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.FileUploadException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
 import flab.project.sharemyhobby.util.FileUploader;
@@ -46,6 +47,7 @@ public class ProfileService {
             profileImageUrl = fileUploader.upload(profileImage);
         } catch (S3Exception | IOException e) {
             log.error("Image upload failed : {}", e.getMessage());
+            throw new FileUploadException();
         }
         return profileImageUrl;
     }
