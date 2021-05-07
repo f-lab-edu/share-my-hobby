@@ -14,6 +14,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
+import software.amazon.awssdk.services.s3.model.S3Exception;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,9 +67,24 @@ class ProfileServiceTest {
     }
 
     @Test
-    @DisplayName("프로필을 등록을 실패하면 FileUploadException 발생시킨다")
-    void testThrowFileUploadExceptionIfProfileRegisterFail() throws IOException {
-        doThrow(FileUploadException.class)
+    @DisplayName("AWS S3에 이미지 파일 업로드 실패 시 FileUploadException 발생시킨다")
+    void testThrowFileUploadExceptionIfS3ImageUploadFail() throws IOException {
+        doThrow(S3Exception.class)
+                .when(fileUploader)
+                .upload(profileImage);
+
+        Throwable thrown = catchThrowable(() -> {
+            profileService.registerProfile(1L, profileImage, "아 배고파");
+        });
+
+        verify(fileUploader).upload(profileImage);
+        assertThat(thrown).isInstanceOf(FileUploadException.class);
+    }
+
+    @Test
+    @DisplayName("이미지 파일 읽기 실패 시 FileUploadException 발생시킨다")
+    void testThrowFileUploadExceptionIfImageReadFail () throws IOException {
+        doThrow(IOException.class)
                 .when(fileUploader)
                 .upload(profileImage);
 
