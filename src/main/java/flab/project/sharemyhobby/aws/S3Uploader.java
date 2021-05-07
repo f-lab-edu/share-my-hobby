@@ -25,7 +25,7 @@ public final class S3Uploader implements FileUploader {
 
     @Override
     public String upload(MultipartFile uploadImage) throws IOException {
-        String filePath = S3_DIR_NAME + uploadImage.getName();
+        String filePath = S3_DIR_NAME + "/" + uploadImage.getOriginalFilename();
         return putS3(uploadImage, filePath);
     }
 
