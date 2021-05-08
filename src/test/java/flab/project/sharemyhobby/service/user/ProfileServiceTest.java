@@ -46,8 +46,10 @@ class ProfileServiceTest {
 
     private MultipartFile getImageFile(String fileName) throws IOException {
         URL testImageUrl = getClass().getResource(fileName);
+        assertThat(testImageUrl).isNotNull();
+
         File testImage = new File(testImageUrl.getFile());
-        return new MockMultipartFile(fileName, new FileInputStream(testImage));
+        return new MockMultipartFile(fileName, "test_profile.jpg", "image/jpg", new FileInputStream(testImage));
     }
 
     @BeforeEach
@@ -60,7 +62,6 @@ class ProfileServiceTest {
     void testRegisterProfileAndReturnProfileInfo() throws IOException {
         String statusMessage = "반갑습니다!";
         Profile profile = profileService.registerProfile(1L, profileImage, statusMessage);
-
         assertThat(profile.getId()).isNotNull();
         assertThat(profile.getUserId()).isEqualTo(1L);
         assertThat(profile.getStatusMessage()).isEqualTo(statusMessage);
@@ -95,5 +96,17 @@ class ProfileServiceTest {
         verify(fileUploader).upload(profileImage);
         assertThat(thrown).isInstanceOf(FileUploadException.class);
     }
+
+    @Test
+    @DisplayName("새로운 상태메시지를 업데이트 후 DB의 변경된 상태메시지를 리턴한다")
+    void testUpdateStatusMessageAndReturnNewStatusMessage() {
+        String newStatusMessage = "새로운 상태 메시지";
+        Profile newProfile = profileService.updateProfile(1L, profileImage.getOriginalFilename(), profileImage, newStatusMessage);
+
+        assertThat(newProfile.getId()).isNotNull();
+        assertThat(newProfile.getUserId()).isEqualTo(1L);
+        assertThat(newProfile.getStatusMessage()).isEqualTo(newStatusMessage);
+    }
+
 
 }
