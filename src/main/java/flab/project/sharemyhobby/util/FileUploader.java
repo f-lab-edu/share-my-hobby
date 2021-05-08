@@ -10,4 +10,6 @@ public interface FileUploader {
 
     void delete(String originalFileName);
 
+    void head(String originalFileName);
+
 }

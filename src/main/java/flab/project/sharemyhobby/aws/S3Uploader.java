@@ -9,6 +9,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Utilities;
 import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
 import software.amazon.awssdk.services.s3.model.GetUrlRequest;
+import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
@@ -36,6 +37,11 @@ public final class S3Uploader implements FileUploader {
         s3Client.deleteObject(getDeleteObjectRequest(filePath));
     }
 
+    @Override
+    public void head(String originalFileName) {
+        String filePath = S3_DIR_NAME + "/" + originalFileName;
+        s3Client.headObject(getHeadObjectRequest(filePath));
+    }
 
     private String putS3(MultipartFile uploadImage, String key) throws IOException {
         PutObjectRequest objectRequest = getPutObjectRequest(key);
@@ -58,6 +64,12 @@ public final class S3Uploader implements FileUploader {
                 .build();
     }
 
+    private HeadObjectRequest getHeadObjectRequest(String key) {
+        return HeadObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+    }
 
     private String getUploadImageUrl(String key) {
         S3Utilities s3Utilities = s3Client.utilities();
