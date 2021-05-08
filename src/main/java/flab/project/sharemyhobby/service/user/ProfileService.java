@@ -39,6 +39,24 @@ public class ProfileService {
                 .build();
     }
 
+    @Transactional
+    public Profile updateProfile(Long userId, String oldImageFileName, MultipartFile profileImage, String statusMessage) {
+        fileUploader.delete(oldImageFileName);
+
+        String profileImageUrl = uploadProfileImage(profileImage);
+        Profile profile = Profile.builder()
+                .id(null)
+                .userId(userId)
+                .profileImageUrl(profileImageUrl)
+                .statusMessage(statusMessage)
+                .build();
+
+        long profileId = profileMapper.updateProfile(profile);
+        return profile.toBuilder()
+                .id(profileId)
+                .build();
+    }
+
     private String uploadProfileImage(MultipartFile profileImage) {
         if (profileImage == null)
             return null;
