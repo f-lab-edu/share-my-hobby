@@ -10,4 +10,6 @@ public interface ProfileMapper {
 
     long saveProfile(Profile profile);
 
+    long updateProfile(Profile profile);
+
 }

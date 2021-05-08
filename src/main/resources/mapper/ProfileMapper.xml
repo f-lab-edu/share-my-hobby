@@ -9,4 +9,13 @@
         VALUES(#{id}, #{userId}, #{profileImageUrl}, #{statusMessage})
     </insert>
 
+    <update id="updateProfile" parameterType="Profile" useGeneratedKeys="true" keyProperty="id">
+        UPDATE
+            profile
+        SET user_id = #{userId},
+            profile_image_url = #{profileImageUrl},
+            status_message = #{statusMessage}
+        WHERE user_id = #{userId}
+    </update>
+
 </mapper>
