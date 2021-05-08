@@ -20,5 +20,6 @@ CREATE TABLE profile (
   profile_image_url varchar(255),
   status_message    varchar(100),
   PRIMARY KEY (id),
+  CONSTRAINT unq_profile_user_id UNIQUE (user_id),
   CONSTRAINT fk_profile_to_user FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE
 );
