@@ -1,5 +1,6 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.DuplicateProfileException;
 import flab.project.sharemyhobby.exception.FileUploadException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
@@ -32,6 +33,9 @@ public class ProfileService {
                     .profileImageUrl(profileImageUrl)
                     .statusMessage(statusMessage)
                     .build();
+
+        if (profileMapper.isDuplicate(userId))
+            throw new DuplicateProfileException();
 
         long profileId = profileMapper.saveProfile(profile);
         return profile.toBuilder()
