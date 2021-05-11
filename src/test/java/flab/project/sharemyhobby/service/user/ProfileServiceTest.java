@@ -1,9 +1,9 @@
 package flab.project.sharemyhobby.service.user;
 
 import flab.project.sharemyhobby.exception.FileUploadException;
+import flab.project.sharemyhobby.exception.ProfileNotFoundException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
-import flab.project.sharemyhobby.model.user.User;
 import flab.project.sharemyhobby.util.FileUploader;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
@@ -20,8 +20,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
 import static org.mockito.Mockito.*;
 
@@ -41,20 +43,21 @@ class ProfileServiceTest {
     private ProfileService profileService;
 
     private MultipartFile profileImage;
+    private MultipartFile newProfileImage;
 
-    User user;
-
-    private MultipartFile getImageFile(String fileName) throws IOException {
+    private MultipartFile getImageFile(String originalFileName) throws IOException {
+        String fileName = "/" + originalFileName;
         URL testImageUrl = getClass().getResource(fileName);
         assertThat(testImageUrl).isNotNull();
 
         File testImage = new File(testImageUrl.getFile());
-        return new MockMultipartFile(fileName, "test_profile.jpg", "image/jpg", new FileInputStream(testImage));
+        return new MockMultipartFile(fileName, originalFileName, "image/jpg", new FileInputStream(testImage));
     }
 
     @BeforeEach
     void setUp() throws IOException {
-        profileImage = getImageFile("/test_profile.jpg");
+        profileImage = getImageFile("test_profile.jpg");
+        newProfileImage = getImageFile("test_shiba.jpg");
     }
 
     @Test
@@ -98,15 +101,26 @@ class ProfileServiceTest {
     }
 
     @Test
-    @DisplayName("새로운 상태메시지를 업데이트 후 DB의 변경된 상태메시지를 리턴한다")
-    void testUpdateStatusMessageAndReturnNewStatusMessage() {
+    @DisplayName("프로필 업데이트 시 새로운 이미지와 상태메시지로 대체되며 새로운 프로필 정보를 리턴한다")
+    void testUpdateStatusMessageAndProfileImageThenReturnNewProfile() {
+        Profile oldProfile = profileService.registerProfile(1L, profileImage, "반갑습니다!");
+        when(profileMapper.findByUserId(1L))
+                .thenReturn(Optional.ofNullable(oldProfile));
+
         String newStatusMessage = "새로운 상태 메시지";
-        Profile newProfile = profileService.updateProfile(1L, profileImage.getOriginalFilename(), profileImage, newStatusMessage);
+        Profile newProfile = profileService.updateProfile(1L, newProfileImage, newStatusMessage);
 
         assertThat(newProfile.getId()).isNotNull();
         assertThat(newProfile.getUserId()).isEqualTo(1L);
+        assertThat(newProfile.getProfileImageName()).isEqualTo(newProfileImage.getOriginalFilename());
         assertThat(newProfile.getStatusMessage()).isEqualTo(newStatusMessage);
     }
 
+    @Test
+    @DisplayName("프로필 수정 시 유저 프로필 정보가 존재하지 않으면 ProfileNotFoundException을 던진다")
+    void testThrowProfileNotFoundExceptionIfProfileNotExists() {
+        assertThatThrownBy(() -> profileService.updateProfile(100L, profileImage, "새로운 상태 메시지"))
+                .isExactlyInstanceOf(ProfileNotFoundException.class);
+    }
 
 }
