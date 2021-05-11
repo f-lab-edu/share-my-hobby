@@ -1,6 +1,7 @@
 package flab.project.sharemyhobby.service.user;
 
 import flab.project.sharemyhobby.exception.FileUploadException;
+import flab.project.sharemyhobby.exception.ProfileNotFoundException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
 import flab.project.sharemyhobby.util.FileUploader;
@@ -29,6 +30,7 @@ public class ProfileService {
         Profile profile = Profile.builder()
                     .id(null)
                     .userId(userId)
+                    .profileImageName(profileImage.getOriginalFilename())
                     .profileImageUrl(profileImageUrl)
                     .statusMessage(statusMessage)
                     .build();
@@ -40,21 +42,21 @@ public class ProfileService {
     }
 
     @Transactional
-    public Profile updateProfile(Long userId, String oldImageFileName, MultipartFile profileImage, String statusMessage) {
-        fileUploader.delete(oldImageFileName);
+    public Profile updateProfile(Long userId, MultipartFile newProfileImage, String newStatusMessage) {
+        Profile oldProfile = profileMapper.findByUserId(userId)
+                .orElseThrow(ProfileNotFoundException::new);
 
-        String profileImageUrl = uploadProfileImage(profileImage);
-        Profile profile = Profile.builder()
-                .id(null)
-                .userId(userId)
-                .profileImageUrl(profileImageUrl)
-                .statusMessage(statusMessage)
+        fileUploader.delete(oldProfile.getProfileImageName());
+
+        String newProfileImageUrl = uploadProfileImage(newProfileImage);
+        Profile newProfile = oldProfile.toBuilder()
+                .profileImageName(newProfileImage.getOriginalFilename())
+                .profileImageUrl(newProfileImageUrl)
+                .statusMessage(newStatusMessage)
                 .build();
 
-        long profileId = profileMapper.updateProfile(profile);
-        return profile.toBuilder()
-                .id(profileId)
-                .build();
+        profileMapper.updateProfile(newProfile);
+        return newProfile;
     }
 
     private String uploadProfileImage(MultipartFile profileImage) {

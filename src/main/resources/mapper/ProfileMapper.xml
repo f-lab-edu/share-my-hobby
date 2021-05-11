@@ -4,6 +4,29 @@
 
 <mapper namespace="flab.project.sharemyhobby.mapper.user.ProfileMapper">
 
+    <resultMap type="Profile" id="profileMap">
+        <constructor>
+            <idArg column="id" javaType="Long" />
+            <arg column="user_id" javaType="Long" />
+        </constructor>
+        <result property="profileImageName" column="profile_image_name" />
+        <result property="profileImageUrl" column="profile_image_url" />
+        <result property="statusMessage" column="status_message" />
+    </resultMap>
+
+    <select id="findByUserId" resultMap="profileMap">
+        SELECT
+            id,
+            user_id,
+            profile_image_name,
+            profile_image_url,
+            status_message
+        FROM
+            profile
+        WHERE
+            user_id = #{userId}
+    </select>
+
     <insert id="saveProfile" parameterType="Profile" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO profile (id, user_id, profile_image_name, profile_image_url, status_message)
         VALUES(#{id}, #{userId}, #{profileImageName}, #{profileImageUrl}, #{statusMessage})
