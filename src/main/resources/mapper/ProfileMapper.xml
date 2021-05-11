@@ -5,17 +5,17 @@
 <mapper namespace="flab.project.sharemyhobby.mapper.user.ProfileMapper">
 
     <insert id="saveProfile" parameterType="Profile" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO profile (id, user_id, profile_image_url, status_message)
-        VALUES(#{id}, #{userId}, #{profileImageUrl}, #{statusMessage})
+        INSERT INTO profile (id, user_id, profile_image_name, profile_image_url, status_message)
+        VALUES(#{id}, #{userId}, #{profileImageName}, #{profileImageUrl}, #{statusMessage})
     </insert>
 
-    <update id="updateProfile" parameterType="Profile" useGeneratedKeys="true" keyProperty="id">
+    <update id="updateProfile" parameterType="Profile">
         UPDATE
             profile
-        SET user_id = #{userId},
+        SET profile_image_name = #{profileImageName},
             profile_image_url = #{profileImageUrl},
             status_message = #{statusMessage}
-        WHERE user_id = #{userId}
+        WHERE id = #{id}
     </update>
 
 </mapper>

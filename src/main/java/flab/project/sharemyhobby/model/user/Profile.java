@@ -14,6 +14,8 @@ public class Profile {
     @NonNull
     private final Long userId;
 
+    private String profileImageName;
+
     private String profileImageUrl;
 
     private String statusMessage;
