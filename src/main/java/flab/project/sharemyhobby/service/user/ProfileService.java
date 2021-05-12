@@ -30,7 +30,6 @@ public class ProfileService {
         Profile profile = Profile.builder()
                     .id(null)
                     .userId(userId)
-                    .profileImageName(profileImage.getOriginalFilename())
                     .profileImageUrl(profileImageUrl)
                     .statusMessage(statusMessage)
                     .build();
@@ -46,11 +45,10 @@ public class ProfileService {
         Profile oldProfile = profileMapper.findByUserId(userId)
                 .orElseThrow(ProfileNotFoundException::new);
 
-        fileUploader.delete(oldProfile.getProfileImageName());
+        fileUploader.delete(getImageFileNameFromUrl(oldProfile.getProfileImageUrl()));
 
         String newProfileImageUrl = uploadProfileImage(newProfileImage);
         Profile newProfile = oldProfile.toBuilder()
-                .profileImageName(newProfileImage.getOriginalFilename())
                 .profileImageUrl(newProfileImageUrl)
                 .statusMessage(newStatusMessage)
                 .build();
@@ -72,4 +70,7 @@ public class ProfileService {
         return profileImageUrl;
     }
 
+    private String getImageFileNameFromUrl(String profileImageUrl) {
+        return profileImageUrl.substring(profileImageUrl.lastIndexOf("/") + 1);
+    }
 }

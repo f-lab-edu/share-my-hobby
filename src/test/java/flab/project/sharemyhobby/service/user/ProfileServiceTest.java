@@ -112,7 +112,6 @@ class ProfileServiceTest {
 
         assertThat(newProfile.getId()).isNotNull();
         assertThat(newProfile.getUserId()).isEqualTo(1L);
-        assertThat(newProfile.getProfileImageName()).isEqualTo(newProfileImage.getOriginalFilename());
         assertThat(newProfile.getStatusMessage()).isEqualTo(newStatusMessage);
     }
 
