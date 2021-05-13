@@ -7,6 +7,7 @@ import flab.project.sharemyhobby.model.user.Profile;
 import flab.project.sharemyhobby.util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,10 +35,14 @@ public class ProfileService {
                     .statusMessage(statusMessage)
                     .build();
 
-        if (profileMapper.isDuplicate(userId))
+        long profileId = 0;
+        try {
+            profileId = profileMapper.saveProfile(profile);
+        } catch (DuplicateKeyException e) {
+            log.error("Profile register failed");
             throw new DuplicateProfileException();
+        }
 
-        long profileId = profileMapper.saveProfile(profile);
         return profile.toBuilder()
                 .id(profileId)
                 .build();

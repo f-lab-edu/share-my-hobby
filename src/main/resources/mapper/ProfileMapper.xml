@@ -9,9 +9,4 @@
         VALUES(#{id}, #{userId}, #{profileImageUrl}, #{statusMessage})
     </insert>
 
-    <select id="isDuplicate" resultType="boolean">
-        SELECT EXISTS
-        (SELECT id FROM profile WHERE user_id = #{userId})
-    </select>
-
 </mapper>

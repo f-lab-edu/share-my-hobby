@@ -10,6 +10,4 @@ public interface ProfileMapper {
 
     long saveProfile(Profile profile);
 
-    boolean isDuplicate(Long userId);
-
 }

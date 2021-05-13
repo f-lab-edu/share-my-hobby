@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,11 +103,9 @@ class ProfileServiceTest {
     @Test
     @DisplayName("프로필 등록 시 이미 해당 유저의 프로필이 존재하면 DuplicateProfileException 발생시킨다")
     void testThrowDuplicateProfileExceptionIfProfileAlreadyExists() {
-        Profile profile = profileService.registerProfile(2L, profileImage, "반갑습니다!");
-
-        doThrow(DuplicateProfileException.class)
+        doThrow(DuplicateKeyException.class)
                 .when(profileMapper)
-                .isDuplicate(eq(profile.getUserId()));
+                .saveProfile(any(Profile.class));
 
         assertThatThrownBy(() -> profileService.registerProfile(2L, profileImage, "안녕하세요!"))
                 .isInstanceOf(DuplicateProfileException.class);
