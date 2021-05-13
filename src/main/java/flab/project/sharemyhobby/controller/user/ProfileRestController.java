@@ -21,4 +21,9 @@ public class ProfileRestController {
         return profileService.registerProfile(userId, profileImage, statusMessage);
     }
 
+    @PutMapping(path = "/profile")
+    public Profile update(MultipartFile profileImage, String statusMessage, @LoginUserId Long userId) {
+        return profileService.updateProfile(userId, profileImage, statusMessage);
+    }
+
 }
