@@ -10,8 +10,6 @@ import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.NoSuchKeyException;
-import software.amazon.awssdk.services.s3.model.S3Exception;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +17,6 @@ import java.io.IOException;
 import java.net.URL;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Slf4j
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -58,7 +55,6 @@ class S3UploaderTest {
                     .build();
 
         fileUploader = new S3Uploader(s3Client, bucketName);
-
         profileImage = getTestImageFile();
     }
 
@@ -67,17 +63,18 @@ class S3UploaderTest {
     void testUploadProfileImageToS3AndReturnImageUrl() throws IOException {
         String url = fileUploader.upload(profileImage);
 
+        assertThat(fileUploader.checkExist(profileImage.getOriginalFilename())).isTrue();
         assertThat(url).isNotNull();
         log.info("S3 bucket url: {}", url);
     }
 
     @Test
-    @DisplayName("AWS S3에서 파일 삭제 후 HEAD 요청을 하면 NoSuchKeyException을 던진다")
-    void test() {
-        fileUploader.delete(profileImage.getOriginalFilename());
-        assertThatThrownBy(() -> fileUploader.head(profileImage.getOriginalFilename()))
-                .isExactlyInstanceOf(NoSuchKeyException.class)
-                .isInstanceOf(S3Exception.class);
+    @DisplayName("AWS S3에서 파일 삭제가 성공하면 파일 존재 확인 시 false를 리턴한다")
+    void testReturnFalseWhenCheckExistAfterDeleteFile() {
+        String originalFilename = profileImage.getOriginalFilename();
+        fileUploader.delete(originalFilename);
+
+        assertThat(fileUploader.checkExist(originalFilename)).isFalse();
     }
 
 }

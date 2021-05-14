@@ -7,10 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Utilities;
-import software.amazon.awssdk.services.s3.model.DeleteObjectRequest;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.HeadObjectRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,7 +35,16 @@ public final class S3Uploader implements FileUploader {
     }
 
     @Override
-    public void head(String originalFileName) {
+    public boolean checkExist(String originalFileName) {
+        try {
+            head(originalFileName);
+        } catch (NoSuchKeyException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private void head(String originalFileName) {
         String filePath = S3_DIR_NAME + "/" + originalFileName;
         s3Client.headObject(getHeadObjectRequest(filePath));
     }
