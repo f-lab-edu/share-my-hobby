@@ -9,6 +9,21 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+cloud:
+  aws:
+    region:
+    credentials:
+      accessKey:
+      secretKey:
+    s3:
+      bucketName: share-my-hobby
+    stack:
+      auto: false
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force-response: true
 
 --- ## develop
 spring:

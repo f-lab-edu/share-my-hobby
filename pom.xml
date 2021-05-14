@@ -21,6 +21,7 @@
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
         <h2.version>1.4.200</h2.version>
         <mybatis-typehandlers.version>1.0.2</mybatis-typehandlers.version>
+        <aws.sdk.version>2.16.52</aws.sdk.version>
     </properties>
 
     <dependencies>
@@ -109,6 +110,14 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- AWS S3 적용을 위한 AWS SDK for Java 2.0 의존성 추가 -->
+        <dependency>
+            <groupId>software.amazon.awssdk</groupId>
+            <artifactId>s3</artifactId>
+            <version>${aws.sdk.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>
