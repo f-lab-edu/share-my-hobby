@@ -10,6 +10,6 @@ public interface FileUploader {
 
     void delete(String originalFileName);
 
-    boolean checkExist(String originalFileName);
+    boolean isExist(String originalFileName);
 
 }

@@ -63,7 +63,7 @@ class S3UploaderTest {
     void testUploadProfileImageToS3AndReturnImageUrl() throws IOException {
         String url = fileUploader.upload(profileImage);
 
-        assertThat(fileUploader.checkExist(profileImage.getOriginalFilename())).isTrue();
+        assertThat(fileUploader.isExist(profileImage.getOriginalFilename())).isTrue();
         assertThat(url).isNotNull();
         log.info("S3 bucket url: {}", url);
     }
@@ -74,7 +74,7 @@ class S3UploaderTest {
         String originalFilename = profileImage.getOriginalFilename();
         fileUploader.delete(originalFilename);
 
-        assertThat(fileUploader.checkExist(originalFilename)).isFalse();
+        assertThat(fileUploader.isExist(originalFilename)).isFalse();
     }
 
 }

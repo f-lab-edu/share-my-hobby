@@ -35,7 +35,7 @@ public final class S3Uploader implements FileUploader {
     }
 
     @Override
-    public boolean checkExist(String originalFileName) {
+    public boolean isExist(String originalFileName) {
         try {
             head(originalFileName);
         } catch (NoSuchKeyException e) {
