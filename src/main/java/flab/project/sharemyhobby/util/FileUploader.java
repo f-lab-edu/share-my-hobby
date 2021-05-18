@@ -8,4 +8,8 @@ public interface FileUploader {
 
     String upload(MultipartFile multipartFile) throws IOException;
 
+    void delete(String originalFileName);
+
+    boolean isExist(String originalFileName);
+
 }
