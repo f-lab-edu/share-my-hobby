@@ -1,5 +1,6 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.DuplicateProfileException;
 import flab.project.sharemyhobby.exception.FileUploadException;
 import flab.project.sharemyhobby.exception.ProfileNotFoundException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
@@ -7,6 +8,7 @@ import flab.project.sharemyhobby.model.user.Profile;
 import flab.project.sharemyhobby.util.FileUploader;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,7 +36,14 @@ public class ProfileService {
                     .statusMessage(statusMessage)
                     .build();
 
-        long profileId = profileMapper.saveProfile(profile);
+        long profileId = 0;
+        try {
+            profileId = profileMapper.saveProfile(profile);
+        } catch (DuplicateKeyException e) {
+            log.error("Profile register failed");
+            throw new DuplicateProfileException();
+        }
+
         return profile.toBuilder()
                 .id(profileId)
                 .build();

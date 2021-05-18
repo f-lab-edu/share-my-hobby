@@ -1,5 +1,6 @@
 package flab.project.sharemyhobby.service.user;
 
+import flab.project.sharemyhobby.exception.DuplicateProfileException;
 import flab.project.sharemyhobby.exception.FileUploadException;
 import flab.project.sharemyhobby.exception.ProfileNotFoundException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.extension.*;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +27,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+
 import static org.mockito.Mockito.*;
 
 @Slf4j
@@ -62,7 +65,7 @@ class ProfileServiceTest {
 
     @Test
     @DisplayName("프로필을 등록하면 DB에 저장된 프로필 정보를 리턴한다")
-    void testRegisterProfileAndReturnProfileInfo() throws IOException {
+    void testRegisterProfileAndReturnProfileInfo() {
         String statusMessage = "반갑습니다!";
         Profile profile = profileService.registerProfile(1L, profileImage, statusMessage);
         assertThat(profile.getId()).isNotNull();
@@ -87,7 +90,7 @@ class ProfileServiceTest {
 
     @Test
     @DisplayName("이미지 파일 읽기 실패 시 FileUploadException 발생시킨다")
-    void testThrowFileUploadExceptionIfImageReadFail () throws IOException {
+    void testThrowFileUploadExceptionIfImageReadFail() throws IOException {
         doThrow(IOException.class)
                 .when(fileUploader)
                 .upload(profileImage);
@@ -120,6 +123,17 @@ class ProfileServiceTest {
     void testThrowProfileNotFoundExceptionIfProfileNotExists() {
         assertThatThrownBy(() -> profileService.updateProfile(100L, profileImage, "새로운 상태 메시지"))
                 .isExactlyInstanceOf(ProfileNotFoundException.class);
+    }
+
+    @Test
+    @DisplayName("프로필 등록 시 이미 해당 유저의 프로필이 존재하면 DuplicateProfileException 발생시킨다")
+    void testThrowDuplicateProfileExceptionIfProfileAlreadyExists() {
+        doThrow(DuplicateKeyException.class)
+                .when(profileMapper)
+                .saveProfile(any(Profile.class));
+
+        assertThatThrownBy(() -> profileService.registerProfile(2L, profileImage, "안녕하세요!"))
+                .isInstanceOf(DuplicateProfileException.class);
     }
 
 }
