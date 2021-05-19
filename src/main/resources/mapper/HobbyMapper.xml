@@ -10,12 +10,12 @@
         <collection property="hobbies" ofType="Hobby" resultMap="hobbyMap" />
     </resultMap>
 
-    <resultMap id="hobbyInfoMap" type="Hobby">
+    <resultMap id="hobbyMap" type="Hobby">
         <id property="id" column="hobby_id" />
         <result property="hobbyName" column="hobby_name" />
     </resultMap>
 
-    <select id="findAllCategory" resultMap="categoryMap">
+    <select id="findAllHobbyInfo" resultMap="hobbyInfoMap">
         SELECT A.id AS category_id, A.category_name, B.id AS hobby_id, B.hobby_name
         FROM category A LEFT JOIN hobby B
         ON A.id = B.category_id
