@@ -4,12 +4,11 @@ import lombok.*;
 
 @Getter
 @ToString
-@RequiredArgsConstructor
 @AllArgsConstructor
 public class Hobby {
 
-    final private Integer id;
+    private final int id;
 
-    private String hobbyName;
+    private final String hobbyName;
 
 }
