@@ -5,14 +5,18 @@
 <mapper namespace="flab.project.sharemyhobby.mapper.hobby.HobbyMapper">
 
     <resultMap type="HobbyInfo" id="hobbyInfoMap">
-        <id property="categoryId" column="category_id" />
+        <constructor>
+            <idArg column="category_id" javaType="int" />
+        </constructor>
         <result property="categoryName" column="category_name" />
         <collection property="hobbies" ofType="Hobby" resultMap="hobbyMap" />
     </resultMap>
 
     <resultMap id="hobbyMap" type="Hobby">
-        <id property="id" column="hobby_id" />
-        <result property="hobbyName" column="hobby_name" />
+        <constructor>
+            <idArg column="hobby_id" javaType="_int" />
+            <arg column="hobby_name" javaType="String" />
+        </constructor>
     </resultMap>
 
     <select id="findAllHobbyInfo" resultMap="hobbyInfoMap">
