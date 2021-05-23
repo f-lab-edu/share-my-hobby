@@ -1,4 +1,4 @@
-package flab.project.sharemyhobby.exception;
+package flab.project.sharemyhobby.exception.user;
 
 public class InvalidPasswordException extends RuntimeException {
 
