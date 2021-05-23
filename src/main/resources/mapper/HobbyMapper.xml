@@ -25,4 +25,14 @@
         ON A.id = B.category_id
     </select>
 
+
+    <insert id="saveLikeHobby" parameterType="list">
+        INSERT INTO
+            user_like_hobby (user_id, hobby_id, category_id)
+        VALUES
+        <foreach item="hobby" index="index" collection="likeHobbyList" separator=",">
+            (#{userId}, #{hobby.hobbyId}, #{hobby.categoryId})
+        </foreach>
+    </insert>
+
 </mapper>
