@@ -36,4 +36,9 @@ public class HobbyService {
         return findLikeHobbyInfo(likeHobbyRequest);
     }
 
+
+    private List<HobbyInfo> findLikeHobbyInfo(LikeHobbyRequest likeHobbyRequest) {
+        return hobbyMapper.findHobbyInfoById(likeHobbyRequest.getLikeHobbyList());
+    }
+
 }
