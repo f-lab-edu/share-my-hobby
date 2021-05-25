@@ -18,7 +18,7 @@ public class HobbyService {
     private final HobbyMapper hobbyMapper;
 
     @Transactional(readOnly = true)
-    @Cacheable(value = "hobbyInfo", key = "#root.method.name", cacheManager = "cacheManager")
+    @Cacheable(value = "hobbyInfo", key = "#root.method.name")
     public List<HobbyInfo> findAllHobbyInfo() {
         return hobbyMapper.findAllHobbyInfo();
     }
