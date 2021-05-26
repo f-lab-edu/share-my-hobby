@@ -30,12 +30,11 @@ public class HobbyService {
             hobbyMapper.saveLikeHobby(likeHobbyRequest.getLikeHobbyList(), userId);
         } catch (DuplicateKeyException e) {
             log.error("User's hobby list register failed");
-            throw new DuplicateLikeHobbyException();
+            throw new DuplicateLikeHobbyException(likeHobbyRequest, userId);
         }
 
         return findLikeHobbyInfo(likeHobbyRequest);
     }
-
 
     private List<HobbyInfo> findLikeHobbyInfo(LikeHobbyRequest likeHobbyRequest) {
         return hobbyMapper.findHobbyInfoById(likeHobbyRequest.getLikeHobbyList());
