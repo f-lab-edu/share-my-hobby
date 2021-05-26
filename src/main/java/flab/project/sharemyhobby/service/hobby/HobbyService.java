@@ -29,7 +29,6 @@ public class HobbyService {
         try {
             hobbyMapper.saveLikeHobby(likeHobbyRequest.getLikeHobbyList(), userId);
         } catch (DuplicateKeyException e) {
-            log.error("User's hobby list register failed");
             throw new DuplicateLikeHobbyException(likeHobbyRequest, userId);
         }
 
