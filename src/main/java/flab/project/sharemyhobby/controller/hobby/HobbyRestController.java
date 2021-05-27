@@ -23,7 +23,7 @@ public class HobbyRestController {
     }
 
     @PostMapping("/likes")
-    public List<HobbyInfo> registerLikeHobby(@Valid @RequestBody LikeHobbyRequest likeHobbyRequest, @LoginUserId Long userId) {
+    public List<HobbyInfo> registerLikeHobby(@Valid @RequestBody LikeHobbyRequest likeHobbyRequest, @LoginUserId long userId) {
         return hobbyService.registerLikeHobby(likeHobbyRequest, userId);
     }
 
