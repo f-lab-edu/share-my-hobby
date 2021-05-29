@@ -1,8 +1,8 @@
 package flab.project.sharemyhobby.service.user;
 
-import flab.project.sharemyhobby.exception.DuplicateProfileException;
-import flab.project.sharemyhobby.exception.FileUploadException;
-import flab.project.sharemyhobby.exception.ProfileNotFoundException;
+import flab.project.sharemyhobby.exception.user.DuplicateProfileException;
+import flab.project.sharemyhobby.exception.user.FileUploadException;
+import flab.project.sharemyhobby.exception.user.ProfileNotFoundException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
 import flab.project.sharemyhobby.util.FileUploader;

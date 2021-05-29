@@ -1,7 +1,7 @@
 package flab.project.sharemyhobby.service.user;
 
-import flab.project.sharemyhobby.exception.AlreadyLoginException;
-import flab.project.sharemyhobby.exception.NotFoundException;
+import flab.project.sharemyhobby.exception.user.AlreadyLoginException;
+import flab.project.sharemyhobby.exception.user.NotFoundException;
 import static flab.project.sharemyhobby.model.commons.SessionKey.USER_SESSION_KEY;
 import flab.project.sharemyhobby.model.user.Email;
 import flab.project.sharemyhobby.model.user.User;

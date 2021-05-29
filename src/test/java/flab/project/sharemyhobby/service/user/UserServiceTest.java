@@ -1,7 +1,7 @@
 package flab.project.sharemyhobby.service.user;
 
-import flab.project.sharemyhobby.exception.DuplicateUserException;
-import flab.project.sharemyhobby.exception.NotFoundException;
+import flab.project.sharemyhobby.exception.user.DuplicateUserException;
+import flab.project.sharemyhobby.exception.user.NotFoundException;
 import flab.project.sharemyhobby.mapper.user.UserMapper;
 import flab.project.sharemyhobby.model.api.request.user.PasswordRequest;
 import flab.project.sharemyhobby.model.user.Email;

@@ -1,6 +1,6 @@
 package flab.project.sharemyhobby.interceptor;
 
-import flab.project.sharemyhobby.exception.LoginRequiredException;
+import flab.project.sharemyhobby.exception.user.LoginRequiredException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
