@@ -58,3 +58,4 @@ spring:
     pool-name: TEST_H2_DB
     minimum-idle: 1
     maximum-pool-size: 1
+    schema: classpath*:sql/schema.sql

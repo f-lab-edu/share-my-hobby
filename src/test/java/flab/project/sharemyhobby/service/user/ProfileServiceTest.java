@@ -106,9 +106,9 @@ class ProfileServiceTest {
     @Test
     @DisplayName("프로필 업데이트 시 새로운 이미지와 상태메시지로 대체되며 새로운 프로필 정보를 리턴한다")
     void testUpdateStatusMessageAndProfileImageThenReturnNewProfile() {
-        Profile oldProfile = profileService.registerProfile(1L, profileImage, "반갑습니다!");
+        Profile oldProfile = new Profile(1L, 1L, "/test_profile.jpg", "안녕하세요");
         when(profileMapper.findByUserId(1L))
-                .thenReturn(Optional.ofNullable(oldProfile));
+                .thenReturn(Optional.of(oldProfile));
 
         String newStatusMessage = "새로운 상태 메시지";
         Profile newProfile = profileService.updateProfile(1L, newProfileImage, newStatusMessage);
