@@ -1,6 +1,6 @@
 package flab.project.sharemyhobby.config;
 
-import flab.project.sharemyhobby.aws.S3Uploader;
+import flab.project.sharemyhobby.api.aws.S3Uploader;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
