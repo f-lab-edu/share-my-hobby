@@ -2,7 +2,6 @@ package flab.project.sharemyhobby.model.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import flab.project.sharemyhobby.model.address.Address;
-import flab.project.sharemyhobby.model.address.Location;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -31,8 +30,6 @@ public class User {
 
     private Profile profile;
 
-    private Location location;
-
     private Address address;
 
     private LocalDateTime lastLoginAt;
@@ -46,14 +43,13 @@ public class User {
     }
 
     @Builder(toBuilder=true)
-    public User(Long id, @NonNull Email email, @NonNull String nickname, @NonNull String password, @NonNull Status status, Profile profile, Location location, Address address, LocalDateTime lastLoginAt, LocalDateTime createAt, LocalDateTime updateAt) {
+    public User(Long id, @NonNull Email email, @NonNull String nickname, @NonNull String password, @NonNull Status status, Profile profile, Address address, LocalDateTime lastLoginAt, LocalDateTime createAt, LocalDateTime updateAt) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;
         this.password = password;
         this.status = status;
         this.profile = profile;
-        this.location = location;
         this.address = address;
         this.lastLoginAt = lastLoginAt;
         this.createAt = createAt;
