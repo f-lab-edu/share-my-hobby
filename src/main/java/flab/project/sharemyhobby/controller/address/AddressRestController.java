@@ -18,7 +18,7 @@ public class AddressRestController {
 
     private final AddressService addressService;
 
-    @GetMapping("/address-list")
+    @GetMapping
     public List<Address> search(@RequestBody AddressRequest addressRequest) {
         return addressService.getAddressList(addressRequest);
     }
