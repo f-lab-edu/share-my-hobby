@@ -1,7 +1,8 @@
 package flab.project.sharemyhobby.service.user;
 
-import flab.project.sharemyhobby.exception.DuplicateProfileException;
-import flab.project.sharemyhobby.exception.FileUploadException;
+import flab.project.sharemyhobby.exception.user.DuplicateProfileException;
+import flab.project.sharemyhobby.exception.user.FileUploadException;
+import flab.project.sharemyhobby.exception.user.ProfileNotFoundException;
 import flab.project.sharemyhobby.mapper.user.ProfileMapper;
 import flab.project.sharemyhobby.model.user.Profile;
 import flab.project.sharemyhobby.util.FileUploader;
@@ -48,6 +49,23 @@ public class ProfileService {
                 .build();
     }
 
+    @Transactional
+    public Profile updateProfile(Long userId, MultipartFile newProfileImage, String newStatusMessage) {
+        Profile oldProfile = profileMapper.findByUserId(userId)
+                .orElseThrow(ProfileNotFoundException::new);
+
+        fileUploader.delete(getImageFileNameFromUrl(oldProfile.getProfileImageUrl()));
+
+        String newProfileImageUrl = uploadProfileImage(newProfileImage);
+        Profile newProfile = oldProfile.toBuilder()
+                .profileImageUrl(newProfileImageUrl)
+                .statusMessage(newStatusMessage)
+                .build();
+
+        profileMapper.updateProfile(newProfile);
+        return newProfile;
+    }
+
     private String uploadProfileImage(MultipartFile profileImage) {
         if (profileImage == null)
             return null;
@@ -61,4 +79,7 @@ public class ProfileService {
         return profileImageUrl;
     }
 
+    private String getImageFileNameFromUrl(String profileImageUrl) {
+        return profileImageUrl.substring(profileImageUrl.lastIndexOf("/") + 1);
+    }
 }

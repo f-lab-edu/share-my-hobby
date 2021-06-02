@@ -7,8 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.S3Utilities;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.model.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -29,6 +28,27 @@ public final class S3Uploader implements FileUploader {
         return putS3(uploadImage, filePath);
     }
 
+    @Override
+    public void delete(String originalFileName) {
+        String filePath = S3_DIR_NAME + "/" + originalFileName;
+        s3Client.deleteObject(getDeleteObjectRequest(filePath));
+    }
+
+    @Override
+    public boolean isExist(String originalFileName) {
+        try {
+            head(originalFileName);
+        } catch (NoSuchKeyException e) {
+            return false;
+        }
+        return true;
+    }
+
+    private void head(String originalFileName) {
+        String filePath = S3_DIR_NAME + "/" + originalFileName;
+        s3Client.headObject(getHeadObjectRequest(filePath));
+    }
+
     private String putS3(MultipartFile uploadImage, String key) throws IOException {
         PutObjectRequest objectRequest = getPutObjectRequest(key);
         RequestBody rb = RequestBody.fromInputStream(uploadImage.getInputStream(), uploadImage.getSize());
@@ -38,6 +58,20 @@ public final class S3Uploader implements FileUploader {
 
     private PutObjectRequest getPutObjectRequest(String key) {
         return PutObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+    }
+
+    private DeleteObjectRequest getDeleteObjectRequest(String key) {
+        return DeleteObjectRequest.builder()
+                .bucket(bucketName)
+                .key(key)
+                .build();
+    }
+
+    private HeadObjectRequest getHeadObjectRequest(String key) {
+        return HeadObjectRequest.builder()
                 .bucket(bucketName)
                 .key(key)
                 .build();

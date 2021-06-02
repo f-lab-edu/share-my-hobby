@@ -1,8 +1,11 @@
 package flab.project.sharemyhobby.service.hobby;
 
+import flab.project.sharemyhobby.exception.hobby.DuplicateLikeHobbyException;
 import flab.project.sharemyhobby.mapper.hobby.HobbyMapper;
+import flab.project.sharemyhobby.model.api.request.hobby.LikeHobbyRequest;
 import flab.project.sharemyhobby.model.hobby.Hobby;
 import flab.project.sharemyhobby.model.hobby.HobbyInfo;
+import flab.project.sharemyhobby.model.hobby.LikeHobby;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.*;
@@ -16,7 +19,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
 
 
 @Slf4j
@@ -67,6 +71,50 @@ class HobbyServiceTest {
                 .flatExtracting("hobbies")
                 .extracting("hobbyName")
                 .contains("헬스", "요가");
+    }
+
+    @Test
+    @DisplayName("유저가 좋아하는 취미 등록하면 DB에 저장한 취미 정보 리스트를 리턴한다")
+    void testReturnLikeHobbyInfoListWhenRegisterLikeHobby() {
+        List<LikeHobby> likeHobbyList = Arrays.asList(
+                                            new LikeHobby(2, 1),  // 야구 (액티비티)
+                                            new LikeHobby(3, 2)   // 헬스 (뷰티/건강)
+                                        );
+        LikeHobbyRequest likeHobbyRequest  = new LikeHobbyRequest(likeHobbyList);
+        List<HobbyInfo> likeHobbyInfos = Arrays.asList(
+                                            new HobbyInfo(1, "액티비티", Arrays.asList(new Hobby(2, "야구"))),
+                                            new HobbyInfo(2, "뷰티/건강", Arrays.asList(new Hobby(3, "헬스")))
+                                        );
+
+        doNothing().when(hobbyMapper).saveLikeHobby(likeHobbyList, 1L);
+        doReturn(likeHobbyInfos).when(hobbyMapper).findHobbyInfoById(likeHobbyList);
+
+        List<HobbyInfo> savedLikeHobbyList = hobbyService.registerLikeHobby(likeHobbyRequest, 1L);
+
+        verify(hobbyMapper, times(1)).saveLikeHobby(likeHobbyList, 1L);
+        assertThat(savedLikeHobbyList).extracting("categoryName").contains("액티비티", "뷰티/건강");
+        assertThat(savedLikeHobbyList).filteredOn("categoryName", "액티비티")
+                .flatExtracting("hobbies")
+                .extracting("hobbyName")
+                .contains("야구");
+        assertThat(savedLikeHobbyList).filteredOn("categoryName", "뷰티/건강")
+                .flatExtracting("hobbies")
+                .extracting("hobbyName")
+                .contains("헬스");
+        log.info("유저가 좋아하는 취미정보 : {}", savedLikeHobbyList);
+    }
+
+    @Test
+    @DisplayName("유저가 좋아하는 취미가 중복으로 입력되면 DuplicateLikeHobbyException을 던진다")
+    void testThrowDuplicateLikeHobbyExceptionWhenLikeHobbyAlreadyExists() {
+        LikeHobby likeHobby = mock(LikeHobby.class);
+        List<LikeHobby> likeHobbyList = Arrays.asList(likeHobby);
+        doThrow(DuplicateLikeHobbyException.class)
+                .when(hobbyMapper)
+                .saveLikeHobby(likeHobbyList, 1L);
+
+        assertThatThrownBy(() -> hobbyMapper.saveLikeHobby(likeHobbyList, 1L))
+                .isExactlyInstanceOf(DuplicateLikeHobbyException.class);
     }
 
 }
