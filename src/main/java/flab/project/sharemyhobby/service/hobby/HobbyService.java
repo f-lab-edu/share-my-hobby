@@ -6,11 +6,8 @@ import flab.project.sharemyhobby.model.api.request.hobby.LikeHobbyRequest;
 import flab.project.sharemyhobby.model.hobby.HobbyInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-<<<<<<< HEAD
 import org.springframework.cache.annotation.Cacheable;
-=======
 import org.springframework.dao.DuplicateKeyException;
->>>>>>> develop
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
