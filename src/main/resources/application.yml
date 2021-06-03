@@ -24,6 +24,9 @@ server:
     encoding:
       charset: UTF-8
       force-response: true
+kakao:
+  restapi:
+    key:
 
 --- ## develop
 spring:
