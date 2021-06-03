@@ -6,6 +6,7 @@ import flab.project.sharemyhobby.model.api.response.address.AddressInfo;
 import flab.project.sharemyhobby.model.api.response.address.KaKaoApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.*;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
@@ -26,6 +27,7 @@ public class KakaoRestApiHelper {
     private static final String API_SERVER_HOST = "https://dapi.kakao.com";
     private static final String SEARCH_ADDRESS_URL = "/v2/local/search/address.json";
 
+    @Cacheable(value = "addressList", key = "#root.method.name")
     public List<Address> getAddressByTownName(AddressRequest addressRequest) {
         URI url = UriComponentsBuilder.fromHttpUrl(API_SERVER_HOST + SEARCH_ADDRESS_URL)
                 .queryParam("query", addressRequest.getTownName())
