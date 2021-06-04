@@ -27,7 +27,7 @@ public class KakaoRestApiHelper {
     private static final String API_SERVER_HOST = "https://dapi.kakao.com";
     private static final String SEARCH_ADDRESS_URL = "/v2/local/search/address.json";
 
-    @Cacheable(value = "addressList", key = "#root.method.name")
+    @Cacheable(value = "addressList", key = "#addressRequest.townName")
     public List<Address> getAddressByTownName(AddressRequest addressRequest) {
         URI url = UriComponentsBuilder.fromHttpUrl(API_SERVER_HOST + SEARCH_ADDRESS_URL)
                 .queryParam("query", addressRequest.getTownName())
