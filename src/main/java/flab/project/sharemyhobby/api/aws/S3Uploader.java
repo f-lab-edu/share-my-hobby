@@ -1,4 +1,4 @@
-package flab.project.sharemyhobby.aws;
+package flab.project.sharemyhobby.api.aws;
 
 import flab.project.sharemyhobby.util.FileUploader;
 import lombok.RequiredArgsConstructor;
