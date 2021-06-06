@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="flab.project.sharemyhobby.mapper.address.AddressMapper">
+
+    <resultMap type="Address" id="addressMap">
+        <constructor>
+            <idArg column="address_code" javaType="String" />
+            <arg column="address_name" javaType="String" />
+            <arg column="axisX" javaType="_double" />
+            <arg column="axisY" javaType="_double" />
+        </constructor>
+    </resultMap>
+
+    <select id="findUserAddressByUserId" resultMap="addressMap">
+        SELECT address_code, address_name, ST_X(position) as axisX, ST_Y(position) as axisY
+        FROM user_address
+        WHERE user_id = #{userId}
+    </select>
+
+    <insert id="saveUserAddress">
+        INSERT INTO
+            user_address (user_id, address_code, address_name, position)
+        VALUES
+            (#{userId}, #{address.addressCode}, #{address.addressName}, POINT(#{address.axisX}, #{address.axisY}))
+    </insert>
+
+</mapper>

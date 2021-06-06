@@ -10,6 +10,7 @@
         <typeAlias type="flab.project.sharemyhobby.model.user.Profile" alias="Profile"/>
         <typeAlias type="flab.project.sharemyhobby.model.hobby.HobbyInfo" alias="HobbyInfo"/>
         <typeAlias type="flab.project.sharemyhobby.model.hobby.Hobby" alias="Hobby"/>
+        <typeAlias type="flab.project.sharemyhobby.model.address.Address" alias="Address"/>
     </typeAliases>
 
     <typeHandlers>
