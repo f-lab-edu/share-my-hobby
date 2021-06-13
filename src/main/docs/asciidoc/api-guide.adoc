@@ -1,0 +1,31 @@
+= Share My Hobby API
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 3
+:sectnums:
+:sectlinks:
+:sectanchors:
+
+= User API
+유저 관련 API
+
+== 회원 가입
+회원 가입에 필요한 유저 정보를 입력하면 DB 저장 후 저장된 유저 정보를 리턴한다.
+
+[[api]]
+=== Request fields
+include::{snippets}/join/request-fields.adoc[]
+
+=== HTTP Request sample
+include::{snippets}/join/http-request.adoc[]
+
+=== Response fields
+==== Common field
+include::{snippets}/join-common/response-fields.adoc[]
+==== Nested fields
+include::{snippets}/join/response-fields-user.adoc[]
+
+=== HTTP Response sample
+include::{snippets}/join/http-response.adoc[]

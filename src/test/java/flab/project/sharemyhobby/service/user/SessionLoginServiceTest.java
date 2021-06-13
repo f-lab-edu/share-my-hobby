@@ -30,8 +30,8 @@ class SessionLoginServiceTest {
 
     @BeforeAll
     void setUp() {
-        email = new Email("adorno10@naver.com");
-        nickname = "cold-pumpkin";
+        email = new Email("test@naver.com");
+        nickname = "test-nickname";
         password = "12345678";
 
         userService.join(email, nickname, password);
@@ -45,7 +45,7 @@ class SessionLoginServiceTest {
 
         assertThat(user).isNotNull();
         assertThat(user.getEmail()).isNotNull();
-        assertThat(user.getId()).isEqualTo(1L);
+        assertThat(user.getId()).isNotNull();
         log.info("로그인 유저 : {}", user);
     }
 
