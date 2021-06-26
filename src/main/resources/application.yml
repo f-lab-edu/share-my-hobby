@@ -11,10 +11,10 @@ spring:
     port: 6379
 cloud:
   aws:
-    region:
+    region: ap-northeast-2
     credentials:
-      accessKey:
-      secretKey:
+      accessKey: AKIA5J5IGJPTKSG26FI2
+      secretKey: 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
     s3:
       bucketName: share-my-hobby
     stack:
@@ -26,7 +26,7 @@ server:
       force-response: true
 kakao:
   restapi:
-    key:
+    key: 00041f94950202b22810e1cc536ebbf0
 
 --- ## develop
 spring:
@@ -44,7 +44,7 @@ spring:
     driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
     url: jdbc:log4jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
-    password:
+    password: gehlen11
 
 --- ## test
 spring:
