@@ -151,6 +151,13 @@
                             </manifest>
                         </archive>
                     </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
 <!--                    <artifactId>maven-assembly-plugin</artifactId>-->
 <!--                    <executions>-->
 <!--                        <execution>-->
