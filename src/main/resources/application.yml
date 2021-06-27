@@ -6,9 +6,6 @@ spring:
       enabled: ALWAYS
   application:
     name: share_my_hobby
-  redis:
-    host: 127.0.0.1
-    port: 6379
 cloud:
   aws:
     region: ap-northeast-2
@@ -33,9 +30,12 @@ spring:
   profiles: develop
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
-    username: root
-    password:
+    url: jdbc:mysql://118.67.134.218:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: philip
+    password: gehlen10367!MY
+  redis:
+    host: 118.67.133.20
+    port: 6379
 
 --- ## local
 spring:
@@ -45,6 +45,9 @@ spring:
     url: jdbc:log4jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
     username: root
     password: gehlen11
+  redis:
+    host: 127.0.0.1
+    port: 6379
 
 --- ## test
 spring:
