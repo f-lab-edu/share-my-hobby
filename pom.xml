@@ -24,6 +24,7 @@
         <mybatis-typehandlers.version>1.0.2</mybatis-typehandlers.version>
         <aws.sdk.version>2.16.52</aws.sdk.version>
         <lombok.version>1.18.20</lombok.version>
+        <maven-jar-plugin.version>3.1.0</maven-jar-plugin.version>
     </properties>
 
     <dependencies>
@@ -149,7 +150,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-jar-plugin</artifactId>
-                    <version>3.1.0</version>
+                    <version>${maven-jar-plugin.version}</version>
                     <configuration>
                         <archive>
                             <manifest>
@@ -159,26 +160,28 @@
                             </manifest>
                         </archive>
                     </configuration>
-<!--                    <artifactId>maven-assembly-plugin</artifactId>-->
-<!--                    <executions>-->
-<!--                        <execution>-->
-<!--                            <phase>package</phase>-->
-<!--                            <goals>-->
-<!--                                <goal>single</goal>-->
-<!--                            </goals>-->
-<!--                        </execution>-->
-<!--                    </executions>-->
-<!--                    <configuration>-->
-<!--                        <archive>-->
-<!--                            <manifest>-->
-<!--                                <addClasspath>true</addClasspath>-->
-<!--                                <mainClass>flab.project.sharemyhobby.ShareMyHobbyApplication</mainClass>-->
-<!--                            </manifest>-->
-<!--                        </archive>-->
-<!--                        <descriptorRefs>-->
-<!--                            <descriptorRef>jar-with-dependencies</descriptorRef>-->
-<!--                        </descriptorRefs>-->
-<!--                    </configuration>-->
+                </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <phase>package</phase>
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <archive>
+                            <manifest>
+                                <addClasspath>true</addClasspath>
+                                <mainClass>flab.project.sharemyhobby.ShareMyHobbyApplication</mainClass>
+                            </manifest>
+                        </archive>
+                        <descriptorRefs>
+                            <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
