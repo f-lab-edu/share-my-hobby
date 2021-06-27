@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>share-my-hobby</name>
     <description>Community-based hobby sharing service</description>
+    <packaging>jar</packaging>
 
     <properties>
         <java.version>11</java.version>
