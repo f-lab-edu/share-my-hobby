@@ -1,0 +1,66 @@
+spring:
+  profiles:
+    active: local
+  output:
+    ansi:
+      enabled: ALWAYS
+  application:
+    name: share_my_hobby
+cloud:
+  aws:
+    region: ap-northeast-2
+    credentials:
+      accessKey: AKIA5J5IGJPTKSG26FI2
+      secretKey: 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
+    s3:
+      bucketName: share-my-hobby
+    stack:
+      auto: false
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      force-response: true
+kakao:
+  restapi:
+    key: 00041f94950202b22810e1cc536ebbf0
+
+--- ## develop
+spring:
+  profiles: develop
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://118.67.134.218:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: philip
+    password: gehlen10367!MY
+  redis:
+    host: 118.67.133.20
+    port: 6379
+
+--- ## local
+spring:
+  profiles: local
+  datasource:
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    url: jdbc:log4jdbc:mysql://localhost:3306/f-lab?autoreconnect=true&characterEncoding=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: gehlen11
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+--- ## test
+spring:
+  profiles: test
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:test_sharemyhobby;MODE=MYSQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+    pool-name: TEST_H2_DB
+    minimum-idle: 1
+    maximum-pool-size: 1
