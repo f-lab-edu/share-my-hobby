@@ -39,3 +39,13 @@ CREATE TABLE user_like_hobby (
   CONSTRAINT fk_like_hobby_to_hobby FOREIGN KEY (hobby_id) REFERENCES hobby (id) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT fk_like_hobby_to_category FOREIGN KEY (category_id) REFERENCES category (id) ON DELETE RESTRICT ON UPDATE CASCADE
 );
+
+DROP TABLE IF EXISTS user_address CASCADE;
+CREATE TABLE user_address (
+  user_id           bigint NOT NULL,
+  address_code		varchar(15) NOT NULL,
+  address_name		varchar(100),
+  position			point,
+  PRIMARY KEY (user_id, address_code),
+  CONSTRAINT fk_address_to_user FOREIGN KEY (user_id) REFERENCES user (id) ON DELETE CASCADE ON UPDATE CASCADE
+);
